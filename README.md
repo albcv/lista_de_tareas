@@ -3,7 +3,7 @@
 
 ### Tecnologías usadas:
 ```
-Frontend: React.js
+Frontend: React.js y Material UI
 Backend: Express.js
 Database: PostgreSQL
 ```

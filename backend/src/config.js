@@ -18,4 +18,8 @@ module.exports = {
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: process.env.GOOGLE_CALLBACK_URL,
 
+    port: process.env.PORT,
+
+    node_env: process.env.NODE_ENV
+
 }

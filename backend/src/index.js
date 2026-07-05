@@ -2,7 +2,8 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const { frontend_url } = require('./config');
+const { frontend_url, port } = require('./config');
+
 
 const taskRoutes = require('./routes/tasks.routes');
 const userRoutes = require('./routes/users.routes');
@@ -30,6 +31,5 @@ app.use((err, req, res, next) => {
   res.status(status).json({ message: err.message });
 });
 
-app.listen(4000);
 
-console.log('Server on port 4000');
+app.listen(port, () => console.log(`✅ Servidor en puerto ${port}`));

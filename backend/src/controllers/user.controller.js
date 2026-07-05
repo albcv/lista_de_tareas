@@ -1,6 +1,8 @@
 const pool = require('../db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { node_env } = require('../config');
+
 
 const register = async (req, res, next) => {
   try {
@@ -34,7 +36,7 @@ const register = async (req, res, next) => {
     // ✅ Establecer cookie HttpOnly
     res.cookie('token', token, {
       httpOnly: true,
-      secure: false, 
+      secure: node_env === 'production', 
       sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 días
     });
@@ -78,7 +80,7 @@ const login = async (req, res, next) => {
     // ✅ Establecer cookie HttpOnly
     res.cookie('token', token, {
       httpOnly: true,
-      secure: false, 
+      secure: node_env === 'production',
       sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });

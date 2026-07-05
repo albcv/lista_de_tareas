@@ -81,7 +81,7 @@ export default function TaskForm() {
   const validate = () => {
     const newErrors = {
       title: formData.title.trim() === '',
-      description: false, // ❌ Descripción NO es obligatoria
+      description: false, // Descripción NO es obligatoria
     };
     setErrors(newErrors);
     return !newErrors.title;
@@ -101,7 +101,7 @@ export default function TaskForm() {
 
       const res = await fetch(url, {
         method,
-        credentials: 'include', // ✅ Enviar cookie HttpOnly
+        credentials: 'include', // Enviar cookie HttpOnly
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
@@ -132,43 +132,45 @@ export default function TaskForm() {
     }
   };
 
-  const loadTask = async (taskId) => {
-    setLoadingTask(true);
-    setErrorMsg('');
-    try {
-      const res = await fetch(`${api}/tasks/${taskId}`, {
-        credentials: 'include', // ✅ Enviar cookie
-      });
-
-      if (res.status === 401) {
-        logout();
-        navigate('/login');
-        return;
-      }
-
-      if (!res.ok) {
-        throw new Error('Error al cargar la tarea');
-      }
-
-      const data = await res.json();
-      setFormData({
-        title: data.title || '',
-        description: data.description || '',
-      });
-      setEditing(true);
-    } catch (error) {
-      console.error('❌ Error al cargar tarea:', error);
-      setErrorMsg('No se pudo cargar la tarea. Intenta de nuevo.');
-    } finally {
-      setLoadingTask(false);
-    }
-  };
-
+  // ✅ useEffect actualizado: loadTask está dentro del efecto
   useEffect(() => {
+    const loadTask = async (taskId) => {
+      setLoadingTask(true);
+      setErrorMsg('');
+      try {
+        const res = await fetch(`${api}/tasks/${taskId}`, {
+          credentials: 'include',
+        });
+
+        if (res.status === 401) {
+          logout();
+          navigate('/login');
+          return;
+        }
+
+        if (!res.ok) {
+          throw new Error('Error al cargar la tarea');
+        }
+
+        const data = await res.json();
+        setFormData({
+          title: data.title || '',
+          description: data.description || '',
+        });
+        setEditing(true);
+      } catch (error) {
+        console.error('❌ Error al cargar tarea:', error);
+        setErrorMsg('No se pudo cargar la tarea. Intenta de nuevo.');
+      } finally {
+        setLoadingTask(false);
+      }
+    };
+
     if (id) {
       loadTask(id);
     }
-  }, [id]);
+    // Dependencias necesarias
+  }, [id, logout, navigate]);
 
   // Mostrar spinner mientras carga la tarea para editar
   if (loadingTask) {

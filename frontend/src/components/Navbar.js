@@ -19,7 +19,6 @@ import {
   Menu as MenuIcon,
   Search as SearchIcon,
   Add as AddIcon,
-  Home as HomeIcon,
   ListAlt as ListAltIcon,
   Close as CloseIcon,
 } from '@mui/icons-material';

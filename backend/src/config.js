@@ -12,5 +12,10 @@ module.exports = {
     },
     json_token: process.env.JWT_SECRET,
 
-    frontend_url: process.env.FRONTEND_URL
+    frontend_url: process.env.FRONTEND_URL,
+
+    clientID: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    callbackURL: process.env.GOOGLE_CALLBACK_URL,
+
 }

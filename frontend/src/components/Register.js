@@ -13,8 +13,10 @@ import {
   Grid,
   InputAdornment,
   IconButton,
+  Divider,
 } from '@mui/material';
 import { PersonAdd as PersonAddIcon, Visibility, VisibilityOff } from '@mui/icons-material';
+import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../config';
 
@@ -88,6 +90,36 @@ const Register = () => {
     }
   };
 
+  const handleGoogleSuccess = async (credentialResponse) => {
+    setLoading(true);
+    setError('');
+    try {
+      const res = await fetch(`${api}/auth/google`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: credentialResponse.credential }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || 'Error al registrarse con Google');
+      }
+
+      login(data.user);
+      navigate('/tasks');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleError = () => {
+    setError('Error al registrarse con Google. Intenta de nuevo.');
+  };
+
   return (
     <Container maxWidth="xs">
       <Box
@@ -110,10 +142,26 @@ const Register = () => {
             width: '100%',
           }}
         >
+          <Typography
+            variant="h4"
+            component="h1"
+            sx={{
+              fontWeight: 700,
+              color: 'white',
+              mb: 2,
+              textAlign: 'center',
+              background: 'linear-gradient(135deg, #60a5fa, #a78bfa)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}
+          >
+            📋 Lista de Tareas
+          </Typography>
+
           <Avatar sx={{ m: 1, bgcolor: '#60a5fa' }}>
             <PersonAddIcon />
           </Avatar>
-          <Typography component="h1" variant="h5" sx={{ color: 'white', mb: 2 }}>
+          <Typography component="h2" variant="h5" sx={{ color: 'white', mb: 2 }}>
             Crear Cuenta
           </Typography>
 
@@ -224,7 +272,26 @@ const Register = () => {
             >
               {loading ? <CircularProgress size={24} color="inherit" /> : 'Registrarse'}
             </Button>
-            <Grid container justifyContent="center">
+
+            <Divider sx={{ my: 2, borderColor: '#334155' }}>
+              <Typography variant="caption" sx={{ color: '#94a3b8' }}>
+                O regístrate con
+              </Typography>
+            </Divider>
+
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={handleGoogleError}
+                theme="filled_blue"
+                size="large"
+                width="100%"
+                text="signup_with"
+                shape="pill"
+              />
+            </Box>
+
+            <Grid container justifyContent="center" sx={{ mt: 2 }}>
               <Grid item>
                 <Link to="/login" style={{ color: '#60a5fa', textDecoration: 'none' }}>
                   ¿Ya tienes cuenta? Inicia sesión
@@ -238,7 +305,6 @@ const Register = () => {
   );
 };
 
-// Estilos compartidos
 const textFieldStyles = {
   input: { color: 'white' },
   label: { color: '#94a3b8' },

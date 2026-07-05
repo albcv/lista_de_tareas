@@ -12,8 +12,10 @@ import {
   CircularProgress,
   InputAdornment,
   IconButton,
+  Divider,
 } from '@mui/material';
 import { LockOutlined as LockIcon, Visibility, VisibilityOff } from '@mui/icons-material';
+import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../config';
 
@@ -43,7 +45,6 @@ const Login = () => {
     setError('');
 
     try {
-      // ⚠️ Asegúrate de que la URL sea correcta (ej. /users/login si usas prefijo)
       const res = await fetch(`${api}/login`, {
         method: 'POST',
         credentials: 'include',
@@ -64,6 +65,36 @@ const Login = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    setLoading(true);
+    setError('');
+    try {
+      const res = await fetch(`${api}/auth/google`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: credentialResponse.credential }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || 'Error al iniciar sesión con Google');
+      }
+
+      login(data.user);
+      navigate('/tasks');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleError = () => {
+    setError('Error al iniciar sesión con Google. Intenta de nuevo.');
   };
 
   return (
@@ -88,10 +119,26 @@ const Login = () => {
             width: '100%',
           }}
         >
+          <Typography
+            variant="h4"
+            component="h1"
+            sx={{
+              fontWeight: 700,
+              color: 'white',
+              mb: 2,
+              textAlign: 'center',
+              background: 'linear-gradient(135deg, #60a5fa, #a78bfa)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}
+          >
+            📋 Lista de Tareas
+          </Typography>
+
           <Avatar sx={{ m: 1, bgcolor: '#60a5fa' }}>
             <LockIcon />
           </Avatar>
-          <Typography component="h1" variant="h5" sx={{ color: 'white', mb: 2 }}>
+          <Typography component="h2" variant="h5" sx={{ color: 'white', mb: 2 }}>
             Iniciar Sesión
           </Typography>
 
@@ -135,7 +182,7 @@ const Login = () => {
                       onClick={handleTogglePassword}
                       edge="end"
                       sx={{
-                        color: '#60a5fa', // Azul brillante
+                        color: '#60a5fa',
                         '&:hover': {
                           backgroundColor: 'rgba(96, 165, 250, 0.15)',
                         },
@@ -168,7 +215,26 @@ const Login = () => {
             >
               {loading ? <CircularProgress size={24} color="inherit" /> : 'Ingresar'}
             </Button>
-            <Box sx={{ textAlign: 'center' }}>
+
+            <Divider sx={{ my: 2, borderColor: '#334155' }}>
+              <Typography variant="caption" sx={{ color: '#94a3b8' }}>
+                O continúa con
+              </Typography>
+            </Divider>
+
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1 }}>
+              <GoogleLogin
+                onSuccess={handleGoogleSuccess}
+                onError={handleGoogleError}
+                theme="filled_blue"
+                size="large"
+                width="100%"
+                text="signin_with"
+                shape="pill"
+              />
+            </Box>
+
+            <Box sx={{ textAlign: 'center', mt: 2 }}>
               <Link to="/register" style={{ color: '#60a5fa', textDecoration: 'none' }}>
                 ¿No tienes cuenta? Regístrate
               </Link>
@@ -180,7 +246,6 @@ const Login = () => {
   );
 };
 
-// Estilos compartidos (con mayor contraste para el input)
 const textFieldStyles = {
   input: { color: 'white' },
   label: { color: '#94a3b8' },

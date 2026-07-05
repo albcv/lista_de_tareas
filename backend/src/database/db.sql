@@ -18,3 +18,5 @@ CREATE TABLE task (
     CONSTRAINT unique_title_per_user UNIQUE (user_id, title) 
 );
 
+ALTER TABLE users ADD COLUMN google_id VARCHAR(255) UNIQUE;
+

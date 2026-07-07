@@ -3,11 +3,12 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { node_env } = require('../config');
 
+const isProduction = node_env === 'production';
 
 const register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
-
+    
     if (!name || !email || !password) {
       return res.status(400).json({ message: 'Todos los campos son obligatorios.' });
     }
@@ -36,8 +37,8 @@ const register = async (req, res, next) => {
     // ✅ Establecer cookie HttpOnly
     res.cookie('token', token, {
       httpOnly: true,
-      secure: node_env === 'production', 
-      sameSite: 'lax',
+      secure: isProduction,    
+      sameSite: isProduction ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 días
     });
 
@@ -80,8 +81,8 @@ const login = async (req, res, next) => {
     // ✅ Establecer cookie HttpOnly
     res.cookie('token', token, {
       httpOnly: true,
-      secure: node_env === 'production',
-      sameSite: 'lax',
+      secure: isProduction,    
+      sameSite: isProduction ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 

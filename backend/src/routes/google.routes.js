@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { OAuth2Client } = require('google-auth-library');
 const jwt = require('jsonwebtoken');
 const pool = require('../db');
-const { clientID, json_token } = require('../config');
+const { clientID, json_token, node_env } = require('../config');
 
 const client = new OAuth2Client(clientID);
 

@@ -8,7 +8,7 @@ const isProduction = node_env === 'production';
 const register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
-    
+
     if (!name || !email || !password) {
       return res.status(400).json({ message: 'Todos los campos son obligatorios.' });
     }
@@ -37,9 +37,10 @@ const register = async (req, res, next) => {
     // ✅ Establecer cookie HttpOnly
     res.cookie('token', token, {
       httpOnly: true,
-      secure: isProduction,    
+      secure: isProduction,
       sameSite: isProduction ? 'none' : 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 días
+      partitioned: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 días,
     });
 
     // Responder con el usuario (sin token en el body)
@@ -81,8 +82,9 @@ const login = async (req, res, next) => {
     // ✅ Establecer cookie HttpOnly
     res.cookie('token', token, {
       httpOnly: true,
-      secure: isProduction,    
+      secure: isProduction,
       sameSite: isProduction ? 'none' : 'lax',
+      partitioned: true,
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 

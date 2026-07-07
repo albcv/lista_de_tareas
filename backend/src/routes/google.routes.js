@@ -6,6 +6,8 @@ const { clientID, json_token } = require('../config');
 
 const client = new OAuth2Client(clientID);
 
+const isProduction = node_env === 'production';
+
 // Ruta única para autenticación con Google (desde frontend)
 router.post('/auth/google', async (req, res) => {
   const { token } = req.body;
@@ -50,8 +52,9 @@ router.post('/auth/google', async (req, res) => {
     // 4. Establecer cookie HttpOnly
     res.cookie('token', userJwt, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      secure: isProduction,
+      sameSite: isProduction ? 'none' : 'lax',
+      partitioned: true,
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 

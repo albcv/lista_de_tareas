@@ -39,7 +39,7 @@ const register = async (req, res, next) => {
       httpOnly: true,
       secure: isProduction,
       sameSite: isProduction ? 'none' : 'lax',
-      partitioned: true,
+      partitioned: isProduction,
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 días,
     });
 
@@ -84,7 +84,7 @@ const login = async (req, res, next) => {
       httpOnly: true,
       secure: isProduction,
       sameSite: isProduction ? 'none' : 'lax',
-      partitioned: true,
+      partitioned: isProduction,
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 

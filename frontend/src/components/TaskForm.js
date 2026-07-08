@@ -121,9 +121,8 @@ export default function TaskForm() {
       console.log(editing ? '✅ Tarea editada:' : '✅ Tarea creada:', data);
 
       setSubmitted(true);
-      setTimeout(() => {
-        navigate('/tasks');
-      }, 1500);
+      navigate('/tasks');
+    
     } catch (error) {
       console.error('❌ Error al guardar:', error);
       setErrorMsg(error.message);

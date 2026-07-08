@@ -35,7 +35,7 @@ router.post('/auth/google', async (req, res) => {
         `INSERT INTO users (name, email, password, google_id)
          VALUES ($1, $2, $3, $4)
          RETURNING id, name, email, created_at`,
-        [name, email, 'google_oauth', googleId]
+        [name, email, null, googleId]
       );
       user = insertResult.rows[0];
     } else {

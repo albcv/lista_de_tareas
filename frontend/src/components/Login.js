@@ -127,7 +127,7 @@ const Login = () => {
               color: 'white',
               mb: 2,
               textAlign: 'center',
-              background: 'linear-gradient(135deg, #60a5fa, #a78bfa)',
+              background: 'linear-gradient(135deg, #3b82f6, #06b6d4)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
             }}
@@ -135,7 +135,7 @@ const Login = () => {
             📋 Lista de Tareas
           </Typography>
 
-          <Avatar sx={{ m: 1, bgcolor: '#60a5fa' }}>
+          <Avatar sx={{ m: 1, bgcolor: '#3b82f6' }}>
             <LockIcon />
           </Avatar>
           <Typography component="h2" variant="h5" sx={{ color: 'white', mb: 2 }}>
@@ -182,9 +182,9 @@ const Login = () => {
                       onClick={handleTogglePassword}
                       edge="end"
                       sx={{
-                        color: '#60a5fa',
+                        color: '#3b82f6',
                         '&:hover': {
-                          backgroundColor: 'rgba(96, 165, 250, 0.15)',
+                          backgroundColor: 'rgba(59, 130, 246, 0.15)',
                         },
                       }}
                     >
@@ -203,13 +203,13 @@ const Login = () => {
                 mt: 3,
                 mb: 2,
                 py: 1.5,
-                background: 'linear-gradient(135deg, #60a5fa, #7c3aed)',
+                background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
                 borderRadius: '50px',
                 fontWeight: 700,
-                boxShadow: '0 8px 20px rgba(96,165,250,0.3)',
+                boxShadow: '0 8px 20px rgba(59,130,246,0.3)',
                 '&:hover': {
                   transform: 'scale(1.02)',
-                  boxShadow: '0 12px 28px rgba(96,165,250,0.5)',
+                  boxShadow: '0 12px 28px rgba(59,130,246,0.5)',
                 },
               }}
             >
@@ -235,7 +235,7 @@ const Login = () => {
             </Box>
 
             <Box sx={{ textAlign: 'center', mt: 2 }}>
-              <Link to="/register" style={{ color: '#60a5fa', textDecoration: 'none' }}>
+              <Link to="/register" style={{ color: '#3b82f6', textDecoration: 'none' }}>
                 ¿No tienes cuenta? Regístrate
               </Link>
             </Box>
@@ -251,8 +251,8 @@ const textFieldStyles = {
   label: { color: '#94a3b8' },
   '& .MuiOutlinedInput-root': {
     '& fieldset': { borderColor: '#334155' },
-    '&:hover fieldset': { borderColor: '#60a5fa' },
-    '&.Mui-focused fieldset': { borderColor: '#60a5fa' },
+    '&:hover fieldset': { borderColor: '#3b82f6' },
+    '&.Mui-focused fieldset': { borderColor: '#3b82f6' },
   },
 };
 

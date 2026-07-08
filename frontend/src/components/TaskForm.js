@@ -43,7 +43,7 @@ const StyledTextField = styled(TextField)({
     color: '#94a3b8',
   },
   '& .MuiInputLabel-root.Mui-focused': {
-    color: '#60a5fa',
+    color: '#3b82f6',
   },
   '& .MuiFilledInput-input': {
     color: '#f1f5f9',
@@ -81,7 +81,7 @@ export default function TaskForm() {
   const validate = () => {
     const newErrors = {
       title: formData.title.trim() === '',
-      description: false, // Descripción NO es obligatoria
+      description: false,
     };
     setErrors(newErrors);
     return !newErrors.title;
@@ -101,7 +101,7 @@ export default function TaskForm() {
 
       const res = await fetch(url, {
         method,
-        credentials: 'include', // Enviar cookie HttpOnly
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
@@ -122,7 +122,6 @@ export default function TaskForm() {
 
       setSubmitted(true);
       navigate('/tasks');
-    
     } catch (error) {
       console.error('❌ Error al guardar:', error);
       setErrorMsg(error.message);
@@ -131,7 +130,6 @@ export default function TaskForm() {
     }
   };
 
-  // ✅ useEffect actualizado: loadTask está dentro del efecto
   useEffect(() => {
     const loadTask = async (taskId) => {
       setLoadingTask(true);
@@ -168,10 +166,8 @@ export default function TaskForm() {
     if (id) {
       loadTask(id);
     }
-    // Dependencias necesarias
   }, [id, logout, navigate]);
 
-  // Mostrar spinner mientras carga la tarea para editar
   if (loadingTask) {
     return (
       <Box
@@ -183,7 +179,7 @@ export default function TaskForm() {
           background: 'radial-gradient(circle at 10% 20%, #1e293b, #0b1120)',
         }}
       >
-        <CircularProgress sx={{ color: '#60a5fa' }} />
+        <CircularProgress sx={{ color: '#3b82f6' }} />
       </Box>
     );
   }
@@ -203,7 +199,7 @@ export default function TaskForm() {
             align="center"
             sx={{
               fontWeight: 700,
-              background: 'linear-gradient(135deg, #60a5fa, #a78bfa)',
+              background: 'linear-gradient(135deg, #3b82f6, #06b6d4)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               mb: 2,
@@ -245,8 +241,6 @@ export default function TaskForm() {
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
-                error={errors.description}
-                helperText={errors.description && 'La descripción es obligatoria'}
                 multiline
                 rows={4}
                 sx={{ display: 'block', mb: 3 }}
@@ -262,15 +256,15 @@ export default function TaskForm() {
                   mt: 1,
                   py: 1.5,
                   borderRadius: '50px',
-                  background: 'linear-gradient(135deg, #60a5fa, #7c3aed)',
+                  background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
                   fontWeight: 700,
                   textTransform: 'none',
                   fontSize: '1.1rem',
-                  boxShadow: '0 8px 20px rgba(96, 165, 250, 0.3)',
+                  boxShadow: '0 8px 20px rgba(59,130,246,0.3)',
                   transition: 'all 0.3s ease',
                   '&:hover': {
                     transform: 'scale(1.02)',
-                    boxShadow: '0 12px 28px rgba(96, 165, 250, 0.5)',
+                    boxShadow: '0 12px 28px rgba(59,130,246,0.5)',
                   },
                 }}
               >

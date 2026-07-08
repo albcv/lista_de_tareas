@@ -70,7 +70,14 @@ const login = async (req, res, next) => {
 
     const user = result.rows[0];
 
-    // Comparar contraseña
+    //Verificar si el usuario se registró con Google (password = NULL)
+    if (user.password === null) {
+      return res.status(401).json({
+        message: 'Esta cuenta utiliza autenticación con Google. Inicia sesión con el botón de Google.',
+      });
+    }
+
+    // Comparar contraseña (solo si no es NULL)
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
       return res.status(401).json({ message: 'Credenciales inválidas.' });
@@ -79,7 +86,7 @@ const login = async (req, res, next) => {
     // Generar token
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
-    // ✅ Establecer cookie HttpOnly
+    // Establecer cookie HttpOnly
     res.cookie('token', token, {
       httpOnly: true,
       secure: isProduction,
@@ -88,7 +95,7 @@ const login = async (req, res, next) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    // Devolver datos del usuario (sin contraseña y sin token en el body)
+    // Devolver datos del usuario (sin contraseña)
     const { password: _, ...userWithoutPassword } = user;
     res.json({
       message: 'Login exitoso.',
@@ -98,6 +105,7 @@ const login = async (req, res, next) => {
     next(error);
   }
 };
+
 
 // Obtener perfil del usuario autenticado
 const getProfile = async (req, res, next) => {

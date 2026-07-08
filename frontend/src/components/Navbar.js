@@ -23,7 +23,7 @@ import {
   Close as CloseIcon,
 } from '@mui/icons-material';
 import { styled, alpha } from '@mui/material/styles';
-import { useAuth } from '../context/AuthContext'; 
+import { useAuth } from '../context/AuthContext';
 
 // Barra de búsqueda estilizada
 const Search = styled('div')(({ theme }) => ({
@@ -69,12 +69,11 @@ export default function Navbar() {
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const { user, logout } = useAuth(); // 🔐 Estado de autenticación
+  const { user, logout } = useAuth();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMenuAnchor, setMobileMenuAnchor] = useState(null);
 
-  // Búsqueda vía URL
   const [searchParams, setSearchParams] = useSearchParams();
   const searchQuery = searchParams.get('q') || '';
   const [inputValue, setInputValue] = useState(searchQuery);
@@ -126,7 +125,6 @@ export default function Navbar() {
       >
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            {/* Logo */}
             <Typography
               variant="h6"
               noWrap
@@ -140,7 +138,7 @@ export default function Navbar() {
                 color: 'white',
                 textDecoration: 'none',
                 letterSpacing: '-0.5px',
-                '&:hover': { color: '#60a5fa' },
+                '&:hover': { color: '#3b82f6' },
               }}
             >
               <Box
@@ -149,7 +147,7 @@ export default function Navbar() {
                   display: 'flex',
                   alignItems: 'center',
                   mr: 1,
-                  background: 'linear-gradient(135deg, #60a5fa, #a78bfa)',
+                  background: 'linear-gradient(135deg, #3b82f6, #06b6d4)',
                   borderRadius: '50%',
                   p: 0.6,
                 }}
@@ -159,7 +157,6 @@ export default function Navbar() {
               Lista de Tareas
             </Typography>
 
-            {/* Barra de búsqueda (solo escritorio) */}
             {!isMobile && (
               <Search>
                 <SearchIconWrapper>
@@ -187,37 +184,35 @@ export default function Navbar() {
 
             <Box sx={{ flexGrow: 1 }} />
 
-            {/* Botón Nueva Tarea */}
             <Button
               variant="contained"
               onClick={() => navigate('/task/new')}
               startIcon={<AddIcon />}
               sx={{
                 mr: 2,
-                background: 'linear-gradient(135deg, #60a5fa, #7c3aed)',
+                background: 'linear-gradient(135deg, #3b82f6, #2563eb)',
                 borderRadius: '50px',
                 textTransform: 'none',
                 fontWeight: 600,
                 px: 3,
-                boxShadow: '0 4px 15px rgba(96, 165, 250, 0.4)',
+                boxShadow: '0 4px 15px rgba(59,130,246,0.4)',
                 transition: 'all 0.3s ease',
                 '&:hover': {
                   transform: 'scale(1.05)',
-                  boxShadow: '0 8px 25px rgba(96, 165, 250, 0.6)',
+                  boxShadow: '0 8px 25px rgba(59,130,246,0.6)',
                 },
               }}
             >
               {isMobile ? '' : 'Nueva Tarea'}
             </Button>
 
-            {/* Avatar y menú de usuario */}
             <IconButton
               onClick={handleMenuOpen}
               size="small"
               sx={{
                 ml: 1,
                 border: '2px solid rgba(255,255,255,0.2)',
-                '&:hover': { borderColor: '#60a5fa' },
+                '&:hover': { borderColor: '#3b82f6' },
               }}
             >
               <Avatar
@@ -238,7 +233,6 @@ export default function Navbar() {
               <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
             </Menu>
 
-            {/* Menú hamburguesa (móvil) */}
             {isMobile && (
               <>
                 <IconButton
